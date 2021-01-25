@@ -1,0 +1,3 @@
+[aria-current="page"] .navItem {
+  @apply text-red-500;
+}
