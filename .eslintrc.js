@@ -1,8 +1,8 @@
 module.exports = {
-  plugins: ["@theorem"],
-  extends: ["plugin:@theorem/opinionated"],
+  plugins: ["@theorem", "prettier"],
+  extends: ["plugin:@theorem/opinionated", "prettier"],
   env: {
     browser: true,
     node: true,
   },
-};
+}
