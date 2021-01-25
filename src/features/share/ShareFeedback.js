@@ -1,7 +1,7 @@
 import RoundedImage from "@/common/RoundedImage";
 import useUsers from "@/common/hooks/useUsers";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeedbackQuestions from "./FeedbackQuestions";
 import GiveFeedbackButton from "./GiveFeedbackButton";
 
@@ -9,7 +9,11 @@ function ShareFeedBack() {
   const { data: users } = useUsers();
   const router = useRouter();
   const { userId } = router.query;
-  const [view, setView] = useState(userId ? "details" : "list");
+  const [view, setView] = useState();
+
+  useEffect(() => {
+    setView(userId ? "details" : "list");
+  }, [userId]);
 
   const onGiveFeedbackClick = (id) => {
     router.push({
@@ -25,7 +29,7 @@ function ShareFeedBack() {
       {view === "details" ? (
         <FeedbackQuestions userId={userId} />
       ) : (
-        <div hidden={view !== "list"}>
+        <div>
           <div className="mt-12 mb-4">
             <ListHeader />
           </div>

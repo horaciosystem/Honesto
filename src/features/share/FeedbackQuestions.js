@@ -1,5 +1,6 @@
+/* eslint-disable @theorem/no-imports-down */
 import useQuestions from "@/common/hooks/useQuestions";
-import MultiStepForm from "./MultiStepForm";
+import MultiStepForm from "@/features/share/form/MultiStepForm";
 
 const questionsKey = "@honesto:questions";
 
@@ -15,12 +16,15 @@ function FeedbackQuestions({ userId }) {
 
   return (
     <>
-      {!questions && <span>Loading...</span>}
-      <MultiStepForm
-        questions={questions}
-        initialValues={foo}
-        onSubmit={handleSubmit}
-      />
+      {questions ? (
+        <MultiStepForm
+          questions={questions}
+          initialValues={foo}
+          onSubmit={handleSubmit}
+        />
+      ) : (
+        <span>Loading...</span>
+      )}
     </>
   );
 }

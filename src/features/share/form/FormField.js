@@ -11,7 +11,9 @@ const FormField = React.memo(function FormField({
   ...props
 }) {
   const [field, meta] = useField({ name, ...props });
-  const errorMessage = meta.touched && meta.error;
+  const errorMessage = (meta.touched && meta.error) ?? "";
+
+  console.log({ field, errorMessage });
 
   return (
     <div className="mb-5">
@@ -30,9 +32,9 @@ const FormField = React.memo(function FormField({
           className
         )}
       />
-      <span hidden={!errorMessage} className="block absolute text-red-100 mt-1">
+      {/* <span hidden={!errorMessage} className="block absolute text-red-100 mt-1">
         {errorMessage}
-      </span>
+      </span> */}
     </div>
   );
 });

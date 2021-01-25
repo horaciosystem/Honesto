@@ -1,5 +1,5 @@
 import { Formik, Form } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormField from "./FormField";
 import RateInput from "./RateInput";
 
@@ -7,27 +7,40 @@ function MultiStepForm({ questions, onSubmit, initialValues = {} }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentQuestion = questions[currentIndex];
 
-  /* {"type":"scale",
-  "required":true,
-  "label":"How much do you trust this person to deliver high quality work?",
-  "id":"d4fb213d-222b-48b7-b193-03a79f6c652e"}
-  */
   return (
     <Formik onSubmit={onSubmit} initialValues={initialValues}>
-      {() => (
-        <Form className="flex flex-col">
+      {({ submitForm }) => (
+        <Form className="flex flex-col max-h-96" style={{ height: "500px" }}>
           <div className="space-y-6 md:space-y-10 mt-4 md:mt-6 flex-grow px-4 pb-16">
             <QuestionField question={currentQuestion} />
           </div>
           <div className="flex justify-end space-x-3 flex-grow-0 flex-shrink-0 border-t border-gray-200 p-4">
-            <button type="button">Previous</button>
+            <button
+              type="button"
+              onClick={() => setCurrentIndex((prevState) => prevState - 1)}
+              disabled={currentIndex === 0}
+            >
+              Previous
+            </button>
             <button
               type="button"
               className={currentQuestion.required ? "none" : "block"}
+              hidden={currentIndex === questions.length}
             >
               Skip
             </button>
-            <button type="button">Next</button>
+            <button
+              type="button"
+              onClick={() => {
+                if (currentIndex === questions.length) {
+                  submitForm();
+                } else {
+                  setCurrentIndex((prevState) => prevState + 1);
+                }
+              }}
+            >
+              Next
+            </button>
           </div>
         </Form>
       )}
@@ -35,9 +48,19 @@ function MultiStepForm({ questions, onSubmit, initialValues = {} }) {
   );
 }
 
-function QuestionField({ question: { name, label, type }, question }) {
+function QuestionField({
+  question: { id: name, label, type, required },
+  question,
+}) {
   if (type === "scale") {
-    return <FieldSet name={name} label={label} component={RateInput} />;
+    return (
+      <FieldSet
+        name={name}
+        label={label}
+        required={required}
+        component={RateInput}
+      />
+    );
   }
 
   if (type === "multipleChoice") {
@@ -46,9 +69,12 @@ function QuestionField({ question: { name, label, type }, question }) {
     //     name={name}
     //     label={label}
     //     options={question.options}
+    // required={required}
     //     component={MultipleInput}
+
     //   />
     // );
+    return "multipleChoice";
   }
 
   return (
@@ -56,18 +82,18 @@ function QuestionField({ question: { name, label, type }, question }) {
       <label htmlFor={name} className="block mb-2 text-center">
         {label}
       </label>
-      <FormField name={name} component={TextInput} />
+      <FormField name={name} required={required} component={TextInput} />
     </div>
   );
 }
 
-function FieldSet({ label, name, component }) {
+function FieldSet({ label, name, component, ...props }) {
   return (
     <fieldset className="space-y-4 flex flex-col items-center">
       <legend htmlFor={name} className="block text-center">
         {label}
       </legend>
-      <FormField name={name} component={component} />
+      <FormField name={name} component={component} {...props} />
     </fieldset>
   );
 }
