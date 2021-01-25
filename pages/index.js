@@ -9,17 +9,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className=""></main>
+      <main className="">HONESTO is Under construction</main>
 
-      <footer className="">
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-        </a>
-      </footer>
+      <footer className=""></footer>
     </div>
   );
 }
