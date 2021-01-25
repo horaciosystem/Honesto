@@ -8,7 +8,9 @@ export const fetcher = (path) =>
 
 export function useApiFetch({ path }) {
   const { error, ...rest } = useSWR(path, fetcher);
-  console.error(error);
+  if (error) {
+    console.error(error);
+  }
 
   return rest;
 }
