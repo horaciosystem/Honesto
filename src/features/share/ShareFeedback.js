@@ -32,13 +32,13 @@ function ShareFeedBack({ users: initialData }) {
   }
 
   return (
-    <>
+    <div className="mt-10">
       <div hidden={view !== "details"}>
         <button onClick={onBack} className="flex items-center py-4">
           <Icon className="w-5 h-4 mr-1" />
           <span className="uppercase text-sm">Back</span>
         </button>
-        <FeedbackQuestions userId={userId} />
+        {view === "details" && <FeedbackQuestions userId={userId} />}
       </div>
       <div hidden={view !== "list"}>
         <div className="mt-12 mb-4">
@@ -70,7 +70,7 @@ function ShareFeedBack({ users: initialData }) {
           ))}
         </ul>
       </div>
-    </>
+    </div>
   )
 }
 

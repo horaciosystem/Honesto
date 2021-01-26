@@ -1,3 +1,5 @@
-[aria-current="page"] .navItem {
-  @apply text-red-500;
+.navItem {
+  &[aria-current="page"] {
+    @apply text-indigo-600;
+  }
 }

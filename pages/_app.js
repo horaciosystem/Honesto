@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <Layout>
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
           </Layout>
         </SWRConfig>
       </ErrorBoundary>

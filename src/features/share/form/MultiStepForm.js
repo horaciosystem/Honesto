@@ -1,55 +1,113 @@
 import useUsers from "@/common/hooks/useUsers"
+import clsx from "clsx"
 import { Formik, Form } from "formik"
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useRef } from "react"
 import FormField from "./FormField"
 import RateInput from "./RateInput"
 
-function MultiStepForm({ questions, onSubmit, initialValues = {}, userId }) {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const currentQuestion = questions[currentIndex]
+function navigationReducer(state, action) {
+  switch (action.type) {
+    case "PREVIOUS": {
+      if (state.currentIndex > 0) {
+        return { ...state, currentIndex: state.currentIndex - 1 }
+      }
+      return state
+    }
+    case "NEXT": {
+      if (state.currentIndex === state.questionsLength - 1) {
+        return { ...state, effect: "submit" }
+      }
+      return { ...state, currentIndex: state.currentIndex + 1 }
+    }
+    case "SKIP": {
+      if (state.currentIndex < state.questionsLength - 1) {
+        return { ...state, currentIndex: state.currentIndex + 1 }
+      }
+      return state
+    }
+    case "RESET": {
+      return { ...state, effect: null }
+    }
+    default:
+      return state
+  }
+}
+
+function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
+  const [state, dispatch] = useReducer(navigationReducer, {
+    currentIndex: 0,
+    effect: null,
+    questionsLength: questions.length,
+  })
+  const currentQuestion = questions[state.currentIndex]
+  const formRef = useRef(null)
+
+  useEffect(() => {
+    if (state.effect === "submit") {
+      formRef.current.submitForm().then(() => dispatch({ type: "RESET" }))
+    }
+  }, [state.effect])
 
   return (
     <>
       <h2 className="font-semibold text-3xl">{currentQuestion.label}</h2>
       <UserDetails userId={userId} />
-      <Formik onSubmit={onSubmit} initialValues={initialValues}>
-        {({ submitForm }) => (
-          <Form className="flex flex-col max-h-96" style={{ height: "500px" }}>
-            <div className="space-y-6 md:space-y-10 mt-4 md:mt-6 flex-grow px-4 pb-16">
+      <Formik
+        innerRef={formRef}
+        onSubmit={onSubmit}
+        initialValues={initialValues}
+      >
+        {() => (
+          <Form
+            className="flex items-center justify-center flex-col max-h-96"
+            style={{ height: "500px" }}
+          >
+            <div className="mb-12">
               <QuestionField question={currentQuestion} />
             </div>
-            <div className="flex justify-end space-x-3 flex-grow-0 flex-shrink-0 border-t border-gray-200 p-4">
-              <button
-                type="button"
-                onClick={() => setCurrentIndex((prevState) => prevState - 1)}
-                disabled={currentIndex === 0}
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                className={currentQuestion.required ? "none" : "block"}
-                hidden={currentIndex === questions.length}
-              >
-                Skip
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (currentIndex === questions.length) {
-                    submitForm()
-                  } else {
-                    setCurrentIndex((prevState) => prevState + 1)
-                  }
-                }}
-              >
-                Next
-              </button>
+            <div className="w-full grid grid-cols-3">
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => dispatch({ type: "PREVIOUS" })}
+                  disabled={state.currentIndex === 0}
+                >
+                  Previous
+                </Button>
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  hidden={state.currentIndex === state.questionsLength - 1}
+                  onClick={() => dispatch({ type: "SKIP" })}
+                >
+                  Skip
+                </Button>
+              </div>
+              <div className="flex justify-center">
+                <Button onClick={() => dispatch({ type: "NEXT" })}>Next</Button>
+              </div>
             </div>
           </Form>
         )}
       </Formik>
+      <div>{`${state.currentIndex + 1}/${state.questionsLength}`}</div>
     </>
+  )
+}
+
+function Button({ children, disabled, className, ...props }) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      className={clsx(
+        "bg-white text-black py-2 w-36 border rounded focus:outline-none focus:ring-2 focus:ring-offset-2",
+        disabled && "cursor-not-allowed ",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
   )
 }
 
@@ -87,10 +145,13 @@ function FieldSet({ label, name, component, ...props }) {
 
 function TextInput(props) {
   return (
-    <input
+    <textarea
       {...props}
-      className="px-3 py-2 bg-inverse focus:bg-white w-full md:max-w-xl block md:mx-auto"
-      placeholder="Type here"
+      placeholder="Say something"
+      rows={10}
+      cols={100}
+      className="px-2 pt-1 block w-full rounded border"
+      style={{ resize: "none" }}
     />
   )
 }
