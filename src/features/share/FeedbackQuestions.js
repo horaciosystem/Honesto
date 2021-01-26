@@ -22,7 +22,7 @@ function FeedbackQuestions({ userId }) {
   useEffect(() => {
     //load only on client side because the page can be rendered in the server side.
     const storage = JSON.parse(window.localStorage.getItem(questionsKey))
-    const answers = storage?.[userId]
+    const answers = storage?.[userId] ?? {}
     setUserAnswers(answers)
   }, [userId])
 
