@@ -1,7 +1,7 @@
 import { useApiFetch } from "@/lib/fetcher";
 
-function useUsers() {
-  return useApiFetch({ path: "users" });
+function useUsers({ initialData }) {
+  return useApiFetch({ path: "users", initialData });
 }
 
 export default useUsers;
