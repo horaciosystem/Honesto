@@ -1,8 +1,8 @@
-import clsx from "clsx";
-import { useState } from "react";
+import clsx from "clsx"
+import { useState } from "react"
 
 function RoundedImage({ src, alt, className, placeholder }) {
-  const [image, setImage] = useState(src);
+  const [image, setImage] = useState(src)
 
   return (
     <img
@@ -11,7 +11,7 @@ function RoundedImage({ src, alt, className, placeholder }) {
       className={clsx("rounded-full w-10 h-10 object-cover", className)}
       onError={() => setImage(placeholder)}
     />
-  );
+  )
 }
 
-export default RoundedImage;
+export default RoundedImage

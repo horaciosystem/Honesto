@@ -1,32 +1,32 @@
 /* eslint-disable @theorem/no-imports-down */
-import useQuestions from "@/common/hooks/useQuestions";
-import MultiStepForm from "@/features/share/form/MultiStepForm";
+import useQuestions from "@/common/hooks/useQuestions"
+import MultiStepForm from "@/features/share/form/MultiStepForm"
 
-const questionsKey = "@honesto:questions";
+const questionsKey = "@honesto:questions"
 
 function FeedbackQuestions({ userId }) {
-  const { data: questions } = useQuestions();
+  const { data: questions, error } = useQuestions()
 
-  const foo = JSON.parse(window.localStorage.getItem(questionsKey));
-  console.log({ foo });
+  // const foo = JSON.parse(window.localStorage.getItem(questionsKey));
 
   const handleSubmit = (values) => {
-    console.log({ values });
-  };
+    console.log({ values })
+  }
 
   return (
     <>
       {questions ? (
         <MultiStepForm
           questions={questions}
-          initialValues={foo}
+          initialValues={{}}
           onSubmit={handleSubmit}
+          userId={userId}
         />
       ) : (
-        <span>Loading...</span>
+        !error && <span>Loading...</span>
       )}
     </>
-  );
+  )
 }
 
-export default FeedbackQuestions;
+export default FeedbackQuestions

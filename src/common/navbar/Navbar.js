@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import styles from "./Navbar.module.css";
+import Link from "next/link"
+import { useRouter } from "next/router"
+import styles from "./Navbar.module.css"
 
 const routes = [
   { href: "/share", label: "Share Feedback" },
   { href: "/received", label: "My Feedback" },
-];
+]
 
 function Navbar() {
   return (
@@ -20,13 +20,13 @@ function Navbar() {
         <li>Teams</li>
       </ul>
     </nav>
-  );
+  )
 }
 
 function NavItem({ href, label }) {
-  const router = useRouter();
-  const { route: currentRoute } = router;
-  const isActive = href === currentRoute;
+  const router = useRouter()
+  const { route: currentRoute } = router
+  const isActive = href === currentRoute
 
   return (
     <Link passHref href={href}>
@@ -37,7 +37,7 @@ function NavItem({ href, label }) {
         {label}
       </a>
     </Link>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

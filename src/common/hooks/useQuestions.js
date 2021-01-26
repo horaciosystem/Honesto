@@ -1,7 +1,7 @@
-import { useApiFetch } from "@/lib/fetcher";
+import { useApiFetch } from "@/lib/fetcher"
 
 function useQuestions() {
-  return useApiFetch({ path: "questions" });
+  return useApiFetch({ path: "questions" })
 }
 
-export default useQuestions;
+export default useQuestions

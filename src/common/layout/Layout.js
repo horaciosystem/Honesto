@@ -1,18 +1,18 @@
-import Head from "next/head";
-import Link from "next/link";
-import Navbar from "@/common/navbar/Navbar";
+import Head from "next/head"
+import Link from "next/link"
+import Navbar from "@/common/navbar/Navbar"
 
 function Layout({ children }) {
   return (
     <div>
       <Header />
-      <main className="">{children}</main>
-      <footer className=""></footer>
+      <main>{children}</main>
+      <footer></footer>
     </div>
-  );
+  )
 }
 
-export default Layout;
+export default Layout
 
 function Header() {
   return (
@@ -20,5 +20,5 @@ function Header() {
       <span className="font-bold w-1/4 text-center text-xl">Honesto</span>
       <Navbar />
     </header>
-  );
+  )
 }

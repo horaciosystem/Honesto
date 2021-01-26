@@ -1,41 +1,41 @@
-import clsx from "clsx";
+import clsx from "clsx"
 
-const RATE_OPTIONS = [1, 2, 3, 4, 5];
+const RATE_OPTIONS = Array.from(Array(10), (_, index) => index + 1)
 
 export default function RateInput({ name, value = 0, onChange }) {
   return (
-    <div className="flex items-center space-x-2 md:space-x-4">
+    <div className="flex items-center space-x-1">
       {RATE_OPTIONS.map((it) => {
-        const checked = it <= value;
-        const checkName = `${name}–${it}`;
+        const checked = it <= value
+        const checkName = `${name}–${it}`
 
         return (
           <label
             key={checkName}
             htmlFor={checkName}
-            className="group flex items-center justify-center min-h-action w-12 rounded-md 
-            hover:text-tertiary-lighten text-white cursor-pointer"
+            className="group flex items-center justify-center min-h-action rounded-md 
+             text-white cursor-pointer"
           >
             <input
               type="checkbox"
               name={checkName}
-              size="sm"
               id={checkName}
               checked={checked}
               onChange={() => onChange(it)}
-              aria-label={`rate this with ${it}`}
+              aria-label={`rate this person with ${it}`}
               className="hidden"
             />
             <div
               className={clsx(
+                "w-16 h-16",
                 checked
-                  ? "text-tertiary group-hover:text-tertiary-lighten"
-                  : "stroke-black group-hover:stroke-current stroke-2 group-hover:stroke-0"
+                  ? "bg-purple-600 hover:bg-purple-400"
+                  : "bg-gray-300 hover:bg-purple-600"
               )}
             />
           </label>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

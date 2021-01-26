@@ -1,6 +1,6 @@
-import React from "react";
-import { useField } from "formik";
-import clsx from "clsx";
+import React from "react"
+import { useField } from "formik"
+import clsx from "clsx"
 
 const FormField = React.memo(function FormField({
   label,
@@ -10,10 +10,8 @@ const FormField = React.memo(function FormField({
   component: Component,
   ...props
 }) {
-  const [field, meta] = useField({ name, ...props });
-  const errorMessage = (meta.touched && meta.error) ?? "";
-
-  console.log({ field, errorMessage });
+  const [field, meta] = useField({ name, ...props })
+  const errorMessage = (meta.touched && meta.error) ?? ""
 
   return (
     <div className="mb-5">
@@ -32,11 +30,11 @@ const FormField = React.memo(function FormField({
           className
         )}
       />
-      {/* <span hidden={!errorMessage} className="block absolute text-red-100 mt-1">
+      <span hidden={!errorMessage} className="block absolute text-red-100 mt-1">
         {errorMessage}
-      </span> */}
+      </span>
     </div>
-  );
-});
+  )
+})
 
-export default FormField;
+export default FormField
