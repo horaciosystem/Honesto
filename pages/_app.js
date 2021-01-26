@@ -1,5 +1,4 @@
 import { useRouter } from "next/router"
-import { ErrorBoundary } from "react-error-boundary"
 import { SWRConfig } from "swr"
 import { ToastContainer, toast } from "react-toastify"
 import Layout from "@/common/layout/Layout"
@@ -12,21 +11,19 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <ErrorBoundary onError={<ErrorNotification router={router} />}>
-        <SWRConfig
-          value={{
-            onError: (error, key) => {
-              if (error.status !== 403 && error.status !== 404) {
-                toast.error(<ErrorNotification router={router} />)
-              }
-            },
-          }}
-        >
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SWRConfig>
-      </ErrorBoundary>
+      <SWRConfig
+        value={{
+          onError: (error, key) => {
+            if (error.status !== 403 && error.status !== 404) {
+              toast.error(<ErrorNotification router={router} />)
+            }
+          },
+        }}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SWRConfig>
       <ToastContainer
         position="top-center"
         autoClose={false}

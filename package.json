@@ -19,7 +19,6 @@
     "postcss-nested": "^5.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-error-boundary": "^3.1.0",
     "react-toastify": "^7.0.0",
     "swr": "^0.4.0",
     "tailwindcss": "^2.0.2"
