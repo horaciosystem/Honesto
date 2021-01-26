@@ -6,7 +6,11 @@ import { useEffect, useState } from "react"
 const questionsKey = "@honesto:questions"
 
 function persistValues(values) {
-  window.localStorage.setItem(questionsKey, JSON.stringify(values))
+  const currentValues = JSON.parse(window.localStorage.getItem(questionsKey))
+  window.localStorage.setItem(
+    questionsKey,
+    JSON.stringify({ ...values, ...currentValues })
+  )
 }
 
 function FeedbackQuestions({ userId }) {
