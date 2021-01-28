@@ -4,7 +4,7 @@ const RATE_OPTIONS = Array.from(Array(10), (_, index) => index + 1)
 
 export default function RateInput({ name, value = 0, onChange }) {
   return (
-    <div className="flex items-center space-x-1">
+    <div className="h-full flex items-center justify-center space-x-1">
       {RATE_OPTIONS.map((it) => {
         const checked = it <= value
         const checkName = `${name}–${it}`

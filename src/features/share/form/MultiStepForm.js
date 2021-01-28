@@ -4,6 +4,7 @@ import { Formik, Form } from "formik"
 import { useEffect, useReducer, useRef } from "react"
 import FormField from "./FormField"
 import RateInput from "./RateInput"
+import MultipleChoiceInput from "./MultipleChoiceInput"
 
 function navigationReducer(state, action) {
   switch (action.type) {
@@ -46,53 +47,58 @@ function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
   }, [state.effect])
 
   return (
-    <>
+    <div>
       <div className="mb-2">
         <label htmlFor={currentQuestion.id} className="font-semibold text-3xl">
           {currentQuestion.label}
         </label>
       </div>
       <UserDetails userId={userId} />
-      <Formik
-        enableReinitialize
-        innerRef={formRef}
-        onSubmit={onSubmit}
-        initialValues={initialValues}
-      >
-        {() => (
-          <Form
-            className="flex items-center justify-center flex-col max-h-96"
-            style={{ height: "500px" }}
-          >
-            <div className="mb-12 h-80 w-full grid place-items-center">
-              <QuestionField question={currentQuestion} />
-            </div>
-            <div className="w-full grid grid-cols-3">
-              <div className="flex justify-center">
-                <Button
-                  onClick={() => dispatch({ type: "PREVIOUS" })}
-                  disabled={state.currentIndex === 0}
-                >
-                  Previous
-                </Button>
+      <div className="mt-3 border py-5 px-4">
+        <Formik
+          enableReinitialize
+          innerRef={formRef}
+          onSubmit={onSubmit}
+          initialValues={initialValues}
+        >
+          {() => (
+            <Form className="flex items-center justify-center flex-col max-h-96 h-1/2">
+              <div className="mb-12 h-80 w-full">
+                <QuestionField question={currentQuestion} />
               </div>
-              <div className="flex justify-center">
-                <Button
-                  hidden={state.currentIndex === state.questionsLength - 1}
-                  onClick={() => dispatch({ type: "SKIP" })}
-                >
-                  Skip
-                </Button>
+              <div className="w-full grid grid-cols-3">
+                <div className="flex justify-center">
+                  <Button
+                    onClick={() => dispatch({ type: "PREVIOUS" })}
+                    disabled={state.currentIndex === 0}
+                  >
+                    Previous
+                  </Button>
+                </div>
+                <div className="flex justify-center">
+                  <Button
+                    hidden={state.currentIndex === state.questionsLength - 1}
+                    onClick={() => dispatch({ type: "SKIP" })}
+                  >
+                    Skip
+                  </Button>
+                </div>
+                <div className="flex justify-center">
+                  <Button onClick={() => dispatch({ type: "NEXT" })}>
+                    Next
+                  </Button>
+                </div>
               </div>
-              <div className="flex justify-center">
-                <Button onClick={() => dispatch({ type: "NEXT" })}>Next</Button>
-              </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
-      <div>{`${state.currentIndex + 1}/${state.questionsLength}`}</div>
-    </>
+            </Form>
+          )}
+        </Formik>
+        <div className="mt-3">
+          <p className="text-sm">{`${state.currentIndex + 1}/${
+            state.questionsLength
+          }`}</p>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -119,15 +125,15 @@ function QuestionField({ question: { id: name, label, type }, question }) {
   }
 
   if (type === "multipleChoice") {
-    // return (
-    //   <FieldSet
-    //     name={name}
-    //     label={label}
-    //     options={question.options}
-    //     component={MultipleInput}
-    //   />
-    // );
-    return "multipleChoice"
+    return (
+      <FieldSet
+        name={name}
+        label={label}
+        options={question.options}
+        multiple
+        component={MultipleChoiceInput}
+      />
+    )
   }
 
   return (
@@ -139,7 +145,7 @@ function QuestionField({ question: { id: name, label, type }, question }) {
 
 function FieldSet({ label, name, component, ...props }) {
   return (
-    <fieldset className="space-y-4 flex flex-col items-center">
+    <fieldset className="h-full space-y-4 flex flex-col items-center">
       <FormField name={name} component={component} {...props} />
     </fieldset>
   )

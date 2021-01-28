@@ -13,7 +13,7 @@ const FormField = React.memo(function FormField({
   const errorMessage = (meta.touched && meta.error) ?? ""
 
   return (
-    <div className="mb-5">
+    <div className="w-full h-full mb-5">
       {label && (
         <label size="sm" htmlFor={name} as="label" className="mb-2 text-left">
           {label}
