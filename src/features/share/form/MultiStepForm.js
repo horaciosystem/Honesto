@@ -47,7 +47,11 @@ function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
 
   return (
     <>
-      <h2 className="font-semibold text-3xl">{currentQuestion.label}</h2>
+      <div className="mb-2">
+        <label htmlFor={currentQuestion.id} className="font-semibold text-3xl">
+          {currentQuestion.label}
+        </label>
+      </div>
       <UserDetails userId={userId} />
       <Formik
         enableReinitialize
@@ -60,7 +64,7 @@ function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
             className="flex items-center justify-center flex-col max-h-96"
             style={{ height: "500px" }}
           >
-            <div className="mb-12">
+            <div className="mb-12 h-80 w-full grid place-items-center">
               <QuestionField question={currentQuestion} />
             </div>
             <div className="w-full grid grid-cols-3">
