@@ -5,7 +5,6 @@ import clsx from "clsx"
 const FormField = React.memo(function FormField({
   label,
   name,
-  validate,
   className,
   component: Component,
   ...props

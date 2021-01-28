@@ -25,9 +25,6 @@ function navigationReducer(state, action) {
       }
       return state
     }
-    case "RESET": {
-      return { ...state, effect: null }
-    }
     default:
       return state
   }
@@ -44,7 +41,7 @@ function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
 
   useEffect(() => {
     if (state.effect === "submit") {
-      formRef.current.submitForm().then(() => dispatch({ type: "RESET" }))
+      formRef.current.submitForm()
     }
   }, [state.effect])
 
@@ -53,6 +50,7 @@ function MultiStepForm({ questions, onSubmit, initialValues, userId }) {
       <h2 className="font-semibold text-3xl">{currentQuestion.label}</h2>
       <UserDetails userId={userId} />
       <Formik
+        enableReinitialize
         innerRef={formRef}
         onSubmit={onSubmit}
         initialValues={initialValues}
