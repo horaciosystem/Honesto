@@ -5,8 +5,8 @@ import { useEffect, useState } from "react"
 import FeedbackQuestions from "./FeedbackQuestions"
 import GiveFeedbackButton from "./GiveFeedbackButton"
 
-function ShareFeedBack({ users: initialData }) {
-  const { data: users, error } = useUsers({ initialData })
+function ShareFeedBack() {
+  const { data: users, isLoading } = useUsers()
   const router = useRouter()
   const { userId } = router.query
   const [view, setView] = useState()
@@ -44,39 +44,42 @@ function ShareFeedBack({ users: initialData }) {
         <div className="mt-12 mb-8">
           <ListHeader />
         </div>
-        {!error && !users && <span>Loading...</span>}
-        <ul className="shadow">
-          {users.length === 0 ? (
-            <div>
-              <h2 className="font-semibold text-xl text-gray-600">
-                No users found.
-              </h2>
-            </div>
-          ) : (
-            users?.map((user) => (
-              <li
-                key={user.id}
-                className="flex items-center space-x-3 px-4 py-5 focus-within:bg-purple-100 
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : (
+          <ul className="shadow">
+            {users.length === 0 ? (
+              <div>
+                <h2 className="font-semibold text-xl text-gray-600">
+                  No users found.
+                </h2>
+              </div>
+            ) : (
+              users?.map((user) => (
+                <li
+                  key={user.id}
+                  className="flex items-center space-x-3 px-4 py-5 focus-within:bg-purple-100 
               group hover:bg-purple-100 border-b-2 border-gray-100 last:borer-none"
-              >
-                <div className="flex-grow-0">
-                  <RoundedImage
-                    src={user.avatar}
-                    alt={`${user.firstName}'s avatar`}
-                    placeholder="/default-profile.svg"
-                  />
-                </div>
-                <div className="flex-grow-2">{`${user.firstName} ${user.lastName}`}</div>
-                <div className="flex-grow-0">
-                  <GiveFeedbackButton
-                    userId={user.id}
-                    onClick={() => onGiveFeedbackClick(user.id)}
-                  />
-                </div>
-              </li>
-            ))
-          )}
-        </ul>
+                >
+                  <div className="flex-grow-0">
+                    <RoundedImage
+                      src={user.avatar}
+                      alt={`${user.firstName}'s avatar`}
+                      placeholder="/default-profile.svg"
+                    />
+                  </div>
+                  <div className="flex-grow-2">{`${user.firstName} ${user.lastName}`}</div>
+                  <div className="flex-grow-0">
+                    <GiveFeedbackButton
+                      userId={user.id}
+                      onClick={() => onGiveFeedbackClick(user.id)}
+                    />
+                  </div>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
       </div>
     </div>
   )

@@ -14,9 +14,9 @@ function persistValues(values) {
 }
 
 function FeedbackQuestions({ userId }) {
+  const { data: questions, isLoading } = useQuestions()
   const [view, setView] = useState("form")
   const [userAnswers, setUserAnswers] = useState({})
-  const { data: questions } = useQuestions()
 
   const handleSubmit = (values) => {
     persistValues({ [userId]: values })
@@ -30,7 +30,7 @@ function FeedbackQuestions({ userId }) {
     setUserAnswers(answers)
   }, [userId])
 
-  if (!questions) {
+  if (isLoading) {
     return <span>Loading...</span>
   }
 

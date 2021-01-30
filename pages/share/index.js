@@ -1,24 +1,28 @@
+import { QueryClient, useQuery } from "react-query"
+import { dehydrate } from "react-query/hydration"
 import ShareFeedBack from "@/features/share/ShareFeedback"
 import PageColumn from "@/common/PageColumn"
 import { fetcher } from "@/lib/fetcher"
 
-function ShareFeedBackPage({ users }) {
+function ShareFeedBackPage() {
   return (
     <PageColumn size="md">
-      <ShareFeedBack users={users} />
+      <ShareFeedBack />
     </PageColumn>
   )
 }
 
 export async function getServerSideProps() {
+  const queryClient = new QueryClient()
   try {
-    const users = await fetcher("users")
-    if (users) {
-      return { props: { users } }
+    await queryClient.prefetchQuery("users", fetcher)
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
     }
   } catch {
     //Ignore API errors on SSR
-    return { props: { users: [] } }
   }
 }
 

@@ -1,29 +1,35 @@
 import { useRouter } from "next/router"
-import { SWRConfig } from "swr"
 import { ToastContainer, toast } from "react-toastify"
 import Layout from "@/common/layout/Layout"
-import "@/globals.css"
+import { QueryClient, QueryClientProvider } from "react-query"
+import { Hydrate } from "react-query/hydration"
+
 // eslint-disable-next-line @theorem/no-imports-down
 import "react-toastify/dist/ReactToastify.css"
+import "@/globals.css"
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
 
+  queryClient.setDefaultOptions({
+    queries: {
+      onError(error) {
+        toast.error(<ErrorNotification router={router} />)
+      },
+    },
+  })
+
   return (
     <>
-      <SWRConfig
-        value={{
-          onError: (error, key) => {
-            if (error.status !== 403 && error.status !== 404) {
-              toast.error(<ErrorNotification router={router} />)
-            }
-          },
-        }}
-      >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </SWRConfig>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Hydrate>
+      </QueryClientProvider>
       <ToastContainer
         position="top-center"
         autoClose={false}
